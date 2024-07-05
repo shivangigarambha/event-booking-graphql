@@ -1,0 +1,82 @@
+# -------------------- Sample example of queries and mutation ------------
+# ---------- User
+# mutation{
+#   createUser(userInput: {
+#     email: "s@s1.com",
+#     password: "1234"
+#   }) {
+#     _id
+#     email
+#     password
+#   }
+# }
+# -------------- Events
+# mutation{
+#   createEvent(eventInput:{
+#     title: "A test event 5",
+#     description:"checking graphQL 5",
+#     price: 56.3,
+#     date: "2024-07-05T07:18:39.478Z"
+#   }) {
+#     _id
+#     title
+#     date
+#   }
+# }
+
+# query {
+# 	events {
+#     _id
+#     title
+#     description
+#     date
+#     creator{
+#       _id
+#       email
+#       createdEvents{
+# 				title
+#         creator {
+#           email
+#         }
+#       }
+#     }
+#   }
+# }
+# -------------- Booking
+# mutation{
+#   bookEvent(eventId: "6687f26d937e4fda5d1107c8") {
+#     _id
+#     user{
+#       email
+#     }
+#     event{
+#       title
+#     }
+#     createdAt
+#     updatedAt
+#   }
+# }
+
+# query {
+# 	bookings {
+#     _id
+#     createdAt
+#     updatedAt
+#     user{
+#       email
+#     }
+#     event{
+# 			title
+#     }
+#   }
+# }
+
+# mutation{
+#   cancelBooking(bookingId: "6687f2ce937e4fda5d110801") {
+#     title
+#    	creator{
+#       email
+#     }
+#   }
+# }
+
