@@ -12,14 +12,17 @@ module.exports = {
       throw err;
     }
   },
-  bookEvent: async args => {
+  bookEvent: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthorized!')
+    }
     const { eventId } = args;
     try {
       const event = await Event.findById(eventId);
       if(!event) throw new Error('Event not found!');
 
       const booking = new Booking({
-        user: '6687cba600c20bb9e62a303b',
+        user: req.userId,
         event
       });
       await booking.save();
@@ -29,10 +32,15 @@ module.exports = {
       throw err;
     }
   },
-  cancelBooking: async ({ bookingId }) => {
+  cancelBooking: async ({ bookingId }, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthorized!')
+    }
     try {
       const booking = await Booking.findById(bookingId).populate('event');
       if (!booking) throw new Error('Booking not found!');
+
+      if (booking.user !== req.userId) throw new Error('Unauthorized!')
 
       await Booking.deleteOne({ _id: bookingId }); 
       return formatEvent(booking.event);
